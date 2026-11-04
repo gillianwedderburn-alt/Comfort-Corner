@@ -110,6 +110,7 @@ export function RoutinePlayer({ routine, onBack }: { routine: Routine; onBack: (
     prevStep.current = 0;
   };
   const next = () => {
+    ensureAudio(audioRef);
     if (stepIndex >= routine.steps.length - 1) {
       setBaseMs(total * 1000);
       setStartedAt(null);
@@ -219,16 +220,6 @@ export function RoutinePlayer({ routine, onBack }: { routine: Routine; onBack: (
           Restart
         </button>
       </div>
-
-      <label className="mt-6 flex min-h-12 cursor-pointer items-center justify-center gap-3 text-sm">
-        <input
-          type="checkbox"
-          checked={chime}
-          onChange={(e) => setChime(e.target.checked)}
-          className="h-5 w-5 accent-[var(--olive)]"
-        />
-        Soft chime between steps
-      </label>
     </section>
   );
 }
