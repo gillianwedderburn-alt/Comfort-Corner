@@ -4,6 +4,7 @@ import { routines, type Routine } from "@/lib/routines";
 import { RoutinePlayer } from "@/components/RoutinePlayer";
 import TalkCards from "@/components/TalkCards";
 import { Button } from "@/components/ui/button";
+import { ReflectionScreen, Journal } from "@/components/Reflections";
 
 // Access code settings. Set REQUIRE_ACCESS_CODE to false to switch the code screen off.
 const REQUIRE_ACCESS_CODE = true;
@@ -34,6 +35,7 @@ function Index() {
   const [unlocked, setUnlocked] = useState(!REQUIRE_ACCESS_CODE);
   const [active, setActive] = useState<Routine | null>(null);
   const [section, setSection] = useState<Section>("routines");
+  const [view, setView] = useState<{ kind: "reflect"; source: string } | { kind: "journal" } | null>(null);
 
   useEffect(() => {
     if (REQUIRE_ACCESS_CODE && sessionStorage.getItem(SESSION_KEY) === "ok") setUnlocked(true);
@@ -41,16 +43,31 @@ function Index() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [active]);
+  }, [active, view]);
 
   return (
     <main className="mx-auto min-h-screen w-full max-w-3xl px-5 py-8 sm:py-12">
       {!unlocked ? (
         <AccessScreen onUnlock={() => setUnlocked(true)} />
+      ) : view?.kind === "reflect" ? (
+        <ReflectionScreen source={view.source} onDone={() => setView(null)} onJournal={() => setView({ kind: "journal" })} />
+      ) : view?.kind === "journal" ? (
+        <Journal onBack={() => setView(null)} />
       ) : active ? (
-        <RoutinePlayer key={active.id} routine={active} onBack={() => setActive(null)} />
+        <RoutinePlayer
+          key={active.id}
+          routine={active}
+          onBack={() => setActive(null)}
+          onReflect={() => { setView({ kind: "reflect", source: active.name }); setActive(null); }}
+        />
       ) : (
-        <Home onPick={setActive} section={section} onSectionChange={setSection} />
+        <Home
+          onPick={setActive}
+          section={section}
+          onSectionChange={setSection}
+          onReflect={() => setView({ kind: "reflect", source: "Talk cards" })}
+          onJournal={() => setView({ kind: "journal" })}
+        />
       )}
     </main>
   );
@@ -102,8 +119,10 @@ function AccessScreen({ onUnlock }: { onUnlock: () => void }) {
   );
 }
 
-function Home({ onPick, section, onSectionChange }: {
+function Home({ onPick, section, onSectionChange, onReflect, onJournal }: {
   onPick: (r: Routine) => void;
+  onReflect: () => void;
+  onJournal: () => void;
   section: Section;
   onSectionChange: (section: Section) => void;
 }) {
@@ -141,6 +160,9 @@ function Home({ onPick, section, onSectionChange }: {
             </Button>
           ))}
         </div>
+        <button onClick={onJournal} className="mt-3 min-h-11 font-medium underline underline-offset-4">
+          My reflection journal
+        </button>
       </header>
 
       <section className="mt-8 rounded-xl bg-sage text-sage-foreground">
@@ -167,7 +189,7 @@ function Home({ onPick, section, onSectionChange }: {
               <li>Afterwards, ask "How was that?" rather than "Are you okay?". It is an easier question to answer.</li>
             </ul>
             <p>
-              These routines are for rest and comfort only. If your daughter is in pain that worries you, or something does not feel right, please speak to your GP or pharmacist. Nothing is stored or sent from this page, so her check-ins stay private.
+              These routines are for rest and comfort only. If your daughter is in pain that worries you, or something does not feel right, please speak to your GP or pharmacist. Nothing is sent from this page. Any reflections she saves stay only on this device, so her check-ins stay private.
             </p>
           </div>
         )}
@@ -192,11 +214,11 @@ function Home({ onPick, section, onSectionChange }: {
       </div>
 
       <div role="tabpanel" id="panel-talk-cards" aria-labelledby="tab-talk-cards" hidden={section !== "talk-cards"} tabIndex={0} className="mt-8">
-        {section === "talk-cards" && <TalkCards />}
+        {section === "talk-cards" && <TalkCards onFinish={onReflect} />}
       </div>
 
       <footer className="mt-10 border-t pt-6 text-sm text-muted-foreground">
-        These routines are for rest and comfort. They are not medical advice. Move gently, stop any stretch that hurts, and speak to a pharmacist or your GP if something worries you. Nothing you do here is saved or sent anywhere.
+        These routines are for rest and comfort. They are not medical advice. Move gently, stop any stretch that hurts, and speak to a pharmacist or your GP if something worries you. Nothing you do here is sent anywhere. Reflections you choose to save are kept only on this device.
       </footer>
     </>
   );

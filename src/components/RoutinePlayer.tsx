@@ -40,7 +40,7 @@ function playChime(audioRef: React.MutableRefObject<AudioContext | null>) {
   }
 }
 
-export function RoutinePlayer({ routine, onBack }: { routine: Routine; onBack: () => void }) {
+export function RoutinePlayer({ routine, onBack, onReflect }: { routine: Routine; onBack: () => void; onReflect?: () => void }) {
   const total = useMemo(() => routine.steps.reduce((a, s) => a + s.seconds, 0), [routine]);
   const bounds = useMemo(() => {
     let acc = 0;
@@ -142,9 +142,16 @@ export function RoutinePlayer({ routine, onBack }: { routine: Routine; onBack: (
           <p className="mt-4 text-lg text-muted-foreground">
             Well done for taking five minutes. Carry that calm into the rest of your day.
           </p>
-          <button onClick={onBack} className="mt-8 h-14 rounded-full bg-primary px-8 text-lg font-semibold text-primary-foreground">
-            Choose another routine
-          </button>
+          <div className="mt-8 flex flex-col items-center gap-3">
+            {onReflect && (
+              <button onClick={onReflect} className="h-14 rounded-full bg-primary px-8 text-lg font-semibold text-primary-foreground">
+                Reflect on how you feel
+              </button>
+            )}
+            <button onClick={onBack} className="h-14 rounded-full border-2 border-olive px-8 font-semibold">
+              Choose another routine
+            </button>
+          </div>
         </div>
       </section>
     );
