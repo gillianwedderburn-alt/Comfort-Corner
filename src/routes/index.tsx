@@ -141,7 +141,8 @@ function Home({ onPick, section, onSectionChange, onReflect, onJournal }: {
   const [open, setOpen] = useState(true);
   return (
     <>
-      <header>
+      <LogoBadge className="absolute right-5 top-8 h-14 w-14 sm:top-12 sm:h-16 sm:w-16" />
+      <header className="pr-20 sm:pr-24">
         <p className="text-sm font-medium tracking-wide text-olive">Tandrewphen Pure</p>
         <h1 className="mt-1 text-4xl font-semibold sm:text-5xl">Comfort Corner</h1>
         <p className="mt-3 text-lg text-muted-foreground">
