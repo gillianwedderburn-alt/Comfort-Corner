@@ -2,8 +2,8 @@ import { useState } from "react";
 import { talkCards } from "@/data/talkCards";
 import { Button } from "@/components/ui/button";
 
-const shuffled = () => {
-  const order = talkCards.map((_, i) => i);
+const shuffled = (indices: number[]) => {
+  const order = [...indices];
   for (let i = order.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     const current = order[i];
@@ -15,13 +15,34 @@ const shuffled = () => {
   return order;
 };
 
+const FILTERS = [
+  { value: "all", label: "All cards" },
+  { value: "starting", label: "Just starting out" },
+  { value: "growing", label: "Growing up" },
+] as const;
+
+type StageFilter = (typeof FILTERS)[number]["value"];
+
+const filteredIndices = (filter: StageFilter) =>
+  talkCards
+    .map((_, i) => i)
+    .filter((i) => filter === "all" || talkCards[i]?.stage === filter);
+
 export default function TalkCards() {
-  const [order, setOrder] = useState<number[]>(() => talkCards.map((_, i) => i));
+  const [filter, setFilter] = useState<StageFilter>("all");
+  const [order, setOrder] = useState<number[]>(() => filteredIndices("all"));
   const [pos, setPos] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const index = order[pos];
   const card = index === undefined ? undefined : talkCards[index];
-  const total = talkCards.length;
+  const total = order.length;
+
+  const pickFilter = (value: StageFilter) => {
+    setFilter(value);
+    setOrder(filteredIndices(value));
+    setPos(0);
+    setFlipped(false);
+  };
 
   const go = (d: number) => {
     setPos((p) => (p + d + total) % total);
@@ -32,7 +53,34 @@ export default function TalkCards() {
 
   return (
     <section aria-label="Talk cards" className="mx-auto max-w-md text-center">
-      <p className="mb-4 text-sm text-muted-foreground">
+      <div
+        role="radiogroup"
+        aria-label="Choose a set of cards"
+        className="grid grid-cols-3 gap-1 rounded-full border-2 border-primary bg-card p-1"
+      >
+        {FILTERS.map((f) => (
+          <Button
+            key={f.value}
+            type="button"
+            variant="comfortTab"
+            role="radio"
+            aria-checked={filter === f.value}
+            onClick={() => pickFilter(f.value)}
+            className={`min-h-12 h-auto rounded-full px-2 py-3 text-base focus-visible:ring-2 ${
+              filter === f.value
+                ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                : "text-foreground"
+            }`}
+          >
+            {f.label}
+          </Button>
+        ))}
+      </div>
+      <p className="mt-3 text-sm text-muted-foreground">
+        Choose the set that suits your daughter, or mix them all.
+      </p>
+
+      <p className="mt-4 text-sm text-muted-foreground">
         Take turns. Tap the card to see what to try together. There are no wrong answers.
       </p>
 
@@ -66,7 +114,7 @@ export default function TalkCards() {
       <Button
         type="button"
         variant="comfortOutline"
-        onClick={() => { setOrder(shuffled()); setPos(0); setFlipped(false); }}
+        onClick={() => { setOrder(shuffled(filteredIndices(filter))); setPos(0); setFlipped(false); }}
         className="mt-3 h-14 px-6"
       >
         Shuffle
