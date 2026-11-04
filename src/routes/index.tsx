@@ -12,7 +12,7 @@ const SESSION_KEY = "comfort-corner-access";
 
 const TITLE = "Comfort Corner and Talk Cards | Tandrewphen Pure";
 const DESC =
-  "Six gentle routines and fifteen conversation cards for mums and teens. Five-minute pauses and thoughtful conversations from Tandrewphen Pure.";
+  "Six gentle routines and twenty-three conversation cards for mums and teens. Five-minute pauses and thoughtful conversations from Tandrewphen Pure.";
 
 type Section = "routines" | "talk-cards";
 
@@ -114,7 +114,7 @@ function Home({ onPick, section, onSectionChange }: {
         <p className="text-sm font-medium tracking-wide text-olive">Tandrewphen Pure</p>
         <h1 className="mt-1 text-4xl font-semibold sm:text-5xl">Comfort Corner</h1>
         <p className="mt-3 text-lg text-muted-foreground">
-          Six gentle routines and fifteen conversation cards for mums and teens.
+          Six gentle routines and twenty-three conversation cards for mums and teens.
         </p>
         <div role="tablist" aria-label="Comfort Corner sections" className="mt-5 grid grid-cols-2 gap-1 rounded-full border-2 border-primary bg-card p-1">
           {(["routines", "talk-cards"] as const).map((value) => (
