@@ -58,7 +58,7 @@ function Index() {
           key={active.id}
           routine={active}
           onBack={() => setActive(null)}
-          onReflect={() => { setView({ kind: "reflect", source: active.name }); setActive(null); }}
+          onReflect={active.id === "wind-down" ? undefined : () => { setView({ kind: "reflect", source: active.name }); setActive(null); }}
         />
       ) : (
         <Home

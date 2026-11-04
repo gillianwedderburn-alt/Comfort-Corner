@@ -40,7 +40,7 @@ function playChime(audioRef: React.MutableRefObject<AudioContext | null>) {
   }
 }
 
-export function RoutinePlayer({ routine, onBack, onReflect }: { routine: Routine; onBack: () => void; onReflect?: () => void }) {
+export function RoutinePlayer({ routine, onBack, onReflect }: { routine: Routine; onBack: () => void; onReflect?: (() => void) | undefined }) {
   const total = useMemo(() => routine.steps.reduce((a, s) => a + s.seconds, 0), [routine]);
   const bounds = useMemo(() => {
     let acc = 0;

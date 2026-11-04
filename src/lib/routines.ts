@@ -65,10 +65,10 @@ export const routines: Routine[] = [
     name: "Wind-down for sleep",
     description: "A quiet five minutes before bed.",
     steps: [
-      { title: "Dim and put away", seconds: 60, text: "Turn the lights down low and put your phone face down, out of reach." },
       { title: "Soften from toes to head", seconds: 120, text: "Starting at your toes, tighten each part of your body for a moment, then let it go. Move slowly up through legs, tummy, hands, shoulders and face." },
       { title: "Slow breaths", seconds: 90, breathing: true, text: "Breathe in gently for 4 and out slowly for 6. Let each breath out be a little longer than the last." },
-      { title: "Settle", seconds: 30, text: "Get comfortable, close your eyes and let the day go. You can stop here and drift off." },
+      { title: "Let go", seconds: 30, text: "Let your whole body rest just as it is. There is nothing more to do, and nowhere else to be." },
+      { title: "Dim and put away", seconds: 60, text: "Now the routine is finished: turn the lights down low and put your phone face down, out of reach. Let that be your signal that the day is done." },
     ],
   },
 ];
