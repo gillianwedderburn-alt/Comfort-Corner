@@ -197,7 +197,7 @@ function Home({ onPick, section, onSectionChange, onReflect, onJournal }: {
             </p>
             <ul className="list-disc space-y-1.5 pl-5">
               <li>Let her choose the routine. Feeling in control is part of the comfort.</li>
-              <li>Try one yourself first, or do it side by side. It works just as well for grown-ups.</li>
+              <li>Try one yourself first, or do it together. It works just as well for grown-ups.</li>
               <li>Keep it light. There is no right way to do it and no score to beat.</li>
               <li>Afterwards, ask "How was that?" rather than "Are you okay?". It is an easier question to answer.</li>
             </ul>
