@@ -8,7 +8,15 @@ function fmt(sec: number) {
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
 }
 
-function playChime(ctxRef: React.MutableRefObject<AudioContext | null>) {
+function ensureAudio(audioRef: React.MutableRefObject<AudioContext | null>) {
+  try {
+    const ctx = audioRef.current ?? new AudioContext();
+    audioRef.current = ctx;
+    if (ctx.state === "suspended") void ctx.resume();
+  } catch {
+    /* audio not available */
+  }
+}
   try {
     const ctx = ctxRef.current ?? new AudioContext();
     ctxRef.current = ctx;
