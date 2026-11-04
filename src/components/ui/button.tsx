@@ -9,6 +9,10 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        comfortPrimary: "rounded-full bg-primary text-primary-foreground font-semibold hover:bg-primary/90",
+        comfortOutline: "rounded-full border-2 border-olive font-semibold hover:bg-sage/30",
+        comfortCard: "whitespace-normal border-2 border-talk-primary text-talk-foreground shadow-sm hover:shadow-md",
+        comfortTab: "whitespace-normal font-semibold hover:bg-sage/30",
         default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
         destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:

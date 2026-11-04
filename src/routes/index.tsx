@@ -2,15 +2,19 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { routines, type Routine } from "@/lib/routines";
 import { RoutinePlayer } from "@/components/RoutinePlayer";
+import TalkCards from "@/components/TalkCards";
+import { Button } from "@/components/ui/button";
 
 // Access code settings. Set REQUIRE_ACCESS_CODE to false to switch the code screen off.
 const REQUIRE_ACCESS_CODE = true;
 const ACCESS_CODE = "PURE2026";
 const SESSION_KEY = "comfort-corner-access";
 
-const TITLE = "Comfort Corner | Tandrewphen Pure";
+const TITLE = "Comfort Corner and Talk Cards | Tandrewphen Pure";
 const DESC =
-  "Six gentle, timed 5-minute routines for mums and teens to follow along with. Calm breathing, stretches and cosy pauses from Tandrewphen Pure.";
+  "Six gentle routines and fifteen conversation cards for mums and teens. Five-minute pauses and thoughtful conversations from Tandrewphen Pure.";
+
+type Section = "routines" | "talk-cards";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -29,6 +33,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [unlocked, setUnlocked] = useState(!REQUIRE_ACCESS_CODE);
   const [active, setActive] = useState<Routine | null>(null);
+  const [section, setSection] = useState<Section>("routines");
 
   useEffect(() => {
     if (REQUIRE_ACCESS_CODE && sessionStorage.getItem(SESSION_KEY) === "ok") setUnlocked(true);
@@ -45,7 +50,7 @@ function Index() {
       ) : active ? (
         <RoutinePlayer key={active.id} routine={active} onBack={() => setActive(null)} />
       ) : (
-        <Home onPick={setActive} />
+        <Home onPick={setActive} section={section} onSectionChange={setSection} />
       )}
     </main>
   );
@@ -97,7 +102,11 @@ function AccessScreen({ onUnlock }: { onUnlock: () => void }) {
   );
 }
 
-function Home({ onPick }: { onPick: (r: Routine) => void }) {
+function Home({ onPick, section, onSectionChange }: {
+  onPick: (r: Routine) => void;
+  section: Section;
+  onSectionChange: (section: Section) => void;
+}) {
   const [open, setOpen] = useState(true);
   return (
     <>
@@ -105,8 +114,33 @@ function Home({ onPick }: { onPick: (r: Routine) => void }) {
         <p className="text-sm font-medium tracking-wide text-olive">Tandrewphen Pure</p>
         <h1 className="mt-1 text-4xl font-semibold sm:text-5xl">Comfort Corner</h1>
         <p className="mt-3 text-lg text-muted-foreground">
-          Five minutes, one gentle routine. Pick what suits the day, press start, and follow along.
+          Six gentle routines and fifteen conversation cards for mums and teens.
         </p>
+        <div role="tablist" aria-label="Comfort Corner sections" className="mt-5 grid grid-cols-2 gap-1 rounded-full border-2 border-primary bg-card p-1">
+          {(["routines", "talk-cards"] as const).map((value) => (
+            <Button
+              key={value}
+              type="button"
+              variant="comfortTab"
+              role="tab"
+              id={`tab-${value}`}
+              aria-selected={section === value}
+              aria-controls={`panel-${value}`}
+              tabIndex={section === value ? 0 : -1}
+              onClick={() => onSectionChange(value)}
+              onKeyDown={(event) => {
+                if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+                event.preventDefault();
+                const next = event.key === "Home" ? "routines" : event.key === "End" ? "talk-cards" : value === "routines" ? "talk-cards" : "routines";
+                onSectionChange(next);
+                document.getElementById(`tab-${next}`)?.focus();
+              }}
+              className={`min-h-12 h-auto rounded-full px-3 py-3 text-base focus-visible:ring-2 ${section === value ? "bg-primary text-primary-foreground hover:bg-primary/90" : "text-foreground"}`}
+            >
+              {value === "routines" ? "Comfort routines" : "Talk cards"}
+            </Button>
+          ))}
+        </div>
       </header>
 
       <section className="mt-8 rounded-xl bg-sage text-sage-foreground">
@@ -139,6 +173,7 @@ function Home({ onPick }: { onPick: (r: Routine) => void }) {
         )}
       </section>
 
+      <div role="tabpanel" id="panel-routines" aria-labelledby="tab-routines" hidden={section !== "routines"} tabIndex={0}>
       <h2 className="sr-only">Routines</h2>
       <ul className="mt-8 grid gap-4 md:grid-cols-2">
         {routines.map((r) => (
@@ -154,6 +189,11 @@ function Home({ onPick }: { onPick: (r: Routine) => void }) {
           </li>
         ))}
       </ul>
+      </div>
+
+      <div role="tabpanel" id="panel-talk-cards" aria-labelledby="tab-talk-cards" hidden={section !== "talk-cards"} tabIndex={0} className="mt-8">
+        {section === "talk-cards" && <TalkCards />}
+      </div>
 
       <footer className="mt-10 border-t pt-6 text-sm text-muted-foreground">
         These routines are for rest and comfort. They are not medical advice. Move gently, stop any stretch that hurts, and speak to a pharmacist or your GP if something worries you. Nothing you do here is saved or sent anywhere.

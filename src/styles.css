@@ -19,6 +19,10 @@
   --color-border: var(--border);
   --color-track: var(--track);
   --color-ring: var(--ring);
+  --color-talk-card: var(--talk-card);
+  --color-talk-foreground: var(--talk-foreground);
+  --color-talk-primary: var(--talk-primary);
+  --color-talk-sage: var(--talk-sage);
 }
 
 :root {
@@ -34,6 +38,10 @@
   --border: oklch(0.85 0.07 85);
   --track: oklch(0.88 0.08 90);
   --ring: oklch(0.57 0.1 120);
+  --talk-card: #fff8dc;
+  --talk-foreground: #50291f;
+  --talk-primary: #ffa948;
+  --talk-sage: #B9D3C5;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -48,6 +56,9 @@
     --border: oklch(0.4 0.04 40);
     --track: oklch(0.38 0.04 40);
     --ring: oklch(0.8 0.15 65);
+    --talk-card: var(--card);
+    --talk-foreground: var(--foreground);
+    --talk-sage: var(--sage);
   }
 }
 
