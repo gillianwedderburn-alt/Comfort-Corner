@@ -47,7 +47,7 @@ function Index() {
   }, [active, view]);
 
   return (
-    <main className="mx-auto min-h-screen w-full max-w-3xl px-5 py-8 sm:py-12">
+    <main className="relative mx-auto min-h-screen w-full max-w-3xl px-5 py-8 sm:py-12">
       {!unlocked ? (
         <AccessScreen onUnlock={() => setUnlocked(true)} />
       ) : view?.kind === "reflect" ? (
@@ -74,11 +74,22 @@ function Index() {
   );
 }
 
+function LogoBadge({ className }: { className: string }) {
+  return (
+    <img
+      src={tpBadge.url}
+      alt="Tandrewphen Pure logo"
+      className={`rounded-full shadow-sm ${className}`}
+    />
+  );
+}
+
 function AccessScreen({ onUnlock }: { onUnlock: () => void }) {
   const [code, setCode] = useState("");
   const [error, setError] = useState(false);
   return (
-    <section className="mx-auto mt-10 max-w-md rounded-xl bg-card p-6 shadow-sm sm:p-8">
+    <section className="relative mx-auto mt-10 max-w-md rounded-xl bg-card p-6 shadow-sm sm:p-8">
+      <LogoBadge className="absolute right-4 top-4 h-14 w-14 sm:h-16 sm:w-16" />
       <p className="text-sm font-medium tracking-wide text-olive">Tandrewphen Pure</p>
       <h1 className="mt-2 text-3xl font-semibold">Welcome to Comfort Corner</h1>
       <form
