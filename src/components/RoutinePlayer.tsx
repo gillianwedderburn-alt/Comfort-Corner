@@ -67,10 +67,10 @@ export function RoutinePlayer({ routine, onBack }: { routine: Routine; onBack: (
 
   let stepIndex = routine.steps.length - 1;
   for (let i = 0; i < bounds.length; i++) {
-    if (elapsed < bounds[i] + routine.steps[i].seconds) { stepIndex = i; break; }
+    if (elapsed < bounds[i]! + routine.steps[i]!.seconds) { stepIndex = i; break; }
   }
-  const step = routine.steps[stepIndex];
-  const stepElapsed = elapsed - bounds[stepIndex];
+  const step = routine.steps[stepIndex]!;
+  const stepElapsed = elapsed - bounds[stepIndex]!;
 
   const prevStep = useRef(stepIndex);
   useEffect(() => {
@@ -106,7 +106,7 @@ export function RoutinePlayer({ routine, onBack }: { routine: Routine; onBack: (
       setStatus("done");
       return;
     }
-    const target = bounds[stepIndex + 1] * 1000;
+    const target = bounds[stepIndex + 1]! * 1000;
     const t = Date.now();
     setBaseMs(target);
     setNow(t);
