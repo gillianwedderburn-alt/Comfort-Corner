@@ -51,7 +51,6 @@ export function RoutinePlayer({ routine, onBack }: { routine: Routine; onBack: (
   const [baseMs, setBaseMs] = useState(0); // elapsed before current run
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const [now, setNow] = useState(() => 0);
-  const [chime, setChime] = useState(false);
   const audioRef = useRef<AudioContext | null>(null);
 
   const elapsed = Math.min(total, (baseMs + (startedAt !== null ? now - startedAt : 0)) / 1000);
@@ -84,14 +83,15 @@ export function RoutinePlayer({ routine, onBack }: { routine: Routine; onBack: (
 
   const prevStep = useRef(stepIndex);
   useEffect(() => {
-    if (stepIndex !== prevStep.current && chime && status !== "idle") playChime(audioRef);
+    if (stepIndex !== prevStep.current && status !== "idle") playChime(audioRef);
     prevStep.current = stepIndex;
-  }, [stepIndex, chime, status]);
+  }, [stepIndex, status]);
   useEffect(() => {
-    if (status === "done" && chime) playChime(audioRef);
-  }, [status, chime]);
+    if (status === "done") playChime(audioRef);
+  }, [status]);
 
   const start = () => {
+    ensureAudio(audioRef);
     const t = Date.now();
     setNow(t);
     setStartedAt(t);
