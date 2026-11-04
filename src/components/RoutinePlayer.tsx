@@ -8,10 +8,20 @@ function fmt(sec: number) {
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
 }
 
-function playChime(ctxRef: React.MutableRefObject<AudioContext | null>) {
+function ensureAudio(audioRef: React.MutableRefObject<AudioContext | null>) {
   try {
-    const ctx = ctxRef.current ?? new AudioContext();
-    ctxRef.current = ctx;
+    const ctx = audioRef.current ?? new AudioContext();
+    audioRef.current = ctx;
+    if (ctx.state === "suspended") void ctx.resume();
+  } catch {
+    /* audio not available */
+  }
+}
+
+function playChime(audioRef: React.MutableRefObject<AudioContext | null>) {
+  try {
+    const ctx = audioRef.current ?? new AudioContext();
+    audioRef.current = ctx;
     const t = ctx.currentTime;
     [523.25, 783.99].forEach((f, i) => {
       const o = ctx.createOscillator();
@@ -41,7 +51,6 @@ export function RoutinePlayer({ routine, onBack }: { routine: Routine; onBack: (
   const [baseMs, setBaseMs] = useState(0); // elapsed before current run
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const [now, setNow] = useState(() => 0);
-  const [chime, setChime] = useState(false);
   const audioRef = useRef<AudioContext | null>(null);
 
   const elapsed = Math.min(total, (baseMs + (startedAt !== null ? now - startedAt : 0)) / 1000);
@@ -74,14 +83,15 @@ export function RoutinePlayer({ routine, onBack }: { routine: Routine; onBack: (
 
   const prevStep = useRef(stepIndex);
   useEffect(() => {
-    if (stepIndex !== prevStep.current && chime && status !== "idle") playChime(audioRef);
+    if (stepIndex !== prevStep.current && status !== "idle") playChime(audioRef);
     prevStep.current = stepIndex;
-  }, [stepIndex, chime, status]);
+  }, [stepIndex, status]);
   useEffect(() => {
-    if (status === "done" && chime) playChime(audioRef);
-  }, [status, chime]);
+    if (status === "done") playChime(audioRef);
+  }, [status]);
 
   const start = () => {
+    ensureAudio(audioRef);
     const t = Date.now();
     setNow(t);
     setStartedAt(t);
@@ -100,6 +110,7 @@ export function RoutinePlayer({ routine, onBack }: { routine: Routine; onBack: (
     prevStep.current = 0;
   };
   const next = () => {
+    ensureAudio(audioRef);
     if (stepIndex >= routine.steps.length - 1) {
       setBaseMs(total * 1000);
       setStartedAt(null);
@@ -209,16 +220,6 @@ export function RoutinePlayer({ routine, onBack }: { routine: Routine; onBack: (
           Restart
         </button>
       </div>
-
-      <label className="mt-6 flex min-h-12 cursor-pointer items-center justify-center gap-3 text-sm">
-        <input
-          type="checkbox"
-          checked={chime}
-          onChange={(e) => setChime(e.target.checked)}
-          className="h-5 w-5 accent-[var(--olive)]"
-        />
-        Soft chime between steps
-      </label>
     </section>
   );
 }
