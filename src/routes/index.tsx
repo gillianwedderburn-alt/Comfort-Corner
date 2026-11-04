@@ -5,6 +5,7 @@ import { RoutinePlayer } from "@/components/RoutinePlayer";
 import TalkCards from "@/components/TalkCards";
 import { Button } from "@/components/ui/button";
 import { ReflectionScreen, Journal } from "@/components/Reflections";
+import tpBadge from "@/assets/tp-badge.png.asset.json";
 
 // Access code settings. Set REQUIRE_ACCESS_CODE to false to switch the code screen off.
 const REQUIRE_ACCESS_CODE = true;
