@@ -17,9 +17,11 @@ function ensureAudio(audioRef: React.MutableRefObject<AudioContext | null>) {
     /* audio not available */
   }
 }
+
+function playChime(audioRef: React.MutableRefObject<AudioContext | null>) {
   try {
-    const ctx = ctxRef.current ?? new AudioContext();
-    ctxRef.current = ctx;
+    const ctx = audioRef.current ?? new AudioContext();
+    audioRef.current = ctx;
     const t = ctx.currentTime;
     [523.25, 783.99].forEach((f, i) => {
       const o = ctx.createOscillator();
