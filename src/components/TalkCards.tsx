@@ -28,7 +28,7 @@ const filteredIndices = (filter: StageFilter) =>
     .map((_, i) => i)
     .filter((i) => filter === "all" || talkCards[i]?.stage === filter);
 
-export default function TalkCards() {
+export default function TalkCards({ onFinish }: { onFinish?: () => void } = {}) {
   const [filter, setFilter] = useState<StageFilter>("all");
   const [order, setOrder] = useState<number[]>(() => filteredIndices("all"));
   const [pos, setPos] = useState(0);
@@ -119,6 +119,11 @@ export default function TalkCards() {
       >
         Shuffle
       </Button>
+      {onFinish && (
+        <Button type="button" variant="comfortPrimary" onClick={onFinish} className="mt-3 h-14 w-full px-6">
+          Finish and reflect
+        </Button>
+      )}
     </section>
   );
 }
