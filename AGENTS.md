@@ -12,3 +12,4 @@
 - Keep conversation card content in `src/data/talkCards.ts` and card interactions in `src/components/TalkCards.tsx`, so content stays editable independently of the player.
 - Keep home section selection in the index component's React state behind the existing gate, so both sections share access without persisting navigation.
 - Use the Button component's comfort variants and semantic talk color tokens for new controls, so the additions match the existing app and support dark mode.
+- Keep home-screen installation manifest-only without app-shell service workers; offline caching is not requested and must not risk stale previews. Installation-tip dismissal stays in React state and the tip is hidden in standalone mode.
