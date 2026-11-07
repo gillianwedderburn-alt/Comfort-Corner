@@ -97,7 +97,7 @@ function AccessScreen({ onUnlock }: { onUnlock: () => void }) {
         className="mt-6 space-y-4"
         onSubmit={(e) => {
           e.preventDefault();
-          if (code.trim().toUpperCase() === ACCESS_CODE.toUpperCase()) {
+          if (ACCESS_CODES.includes(code.trim().toUpperCase())) {
             sessionStorage.setItem(SESSION_KEY, "ok");
             onUnlock();
           } else setError(true);
