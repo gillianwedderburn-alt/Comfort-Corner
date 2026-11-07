@@ -6,6 +6,7 @@ import TalkCards from "@/components/TalkCards";
 import { Button } from "@/components/ui/button";
 import { ReflectionScreen, Journal } from "@/components/Reflections";
 import tpBadge from "@/assets/tp-badge.png.asset.json";
+import { InstallTip } from "@/components/InstallTip";
 
 // Access code settings. Set REQUIRE_ACCESS_CODE to false to switch the code screen off.
 const REQUIRE_ACCESS_CODE = true;
@@ -128,6 +129,7 @@ function AccessScreen({ onUnlock }: { onUnlock: () => void }) {
         Lost your code? Email{" "}
         <a className="underline" href="mailto:tandrewphenpure@gmail.com">tandrewphenpure@gmail.com</a>.
       </p>
+      <InstallTip />
     </section>
   );
 }
