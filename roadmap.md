@@ -7,4 +7,4 @@
 # Home-screen installation
 - [x] Add standalone manifest and logo icons without offline caching.
 - [x] Add a dismissible, platform-aware tip on the access screen.
-- [ ] Verify phone layout, dismissal, standalone visibility and unchanged access.
+- [x] Verify phone layout, dismissal, standalone visibility and unchanged access.
