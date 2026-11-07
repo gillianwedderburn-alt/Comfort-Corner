@@ -9,7 +9,8 @@ import tpBadge from "@/assets/tp-badge.png.asset.json";
 
 // Access code settings. Set REQUIRE_ACCESS_CODE to false to switch the code screen off.
 const REQUIRE_ACCESS_CODE = true;
-const ACCESS_CODE = "TANPURE26";
+// Main code for buyers, plus a temporary free-trial code for a few chosen people.
+const ACCESS_CODES = ["TANPURE26", "TRYPURE10"];
 const SESSION_KEY = "comfort-corner-access";
 
 const TITLE = "Comfort Corner and Talk Cards | Tandrewphen Pure";
