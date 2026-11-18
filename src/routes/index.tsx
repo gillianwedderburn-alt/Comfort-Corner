@@ -93,7 +93,7 @@ function AccessScreen({ onUnlock }: { onUnlock: () => void }) {
     <section className="relative mx-auto mt-10 max-w-md rounded-xl bg-card p-6 shadow-sm sm:p-8">
       <LogoBadge className="absolute right-4 top-4 h-14 w-14 sm:h-16 sm:w-16" />
       <p className="text-sm font-medium tracking-wide text-olive">Tandrewphen Pure</p>
-      <h1 className="mt-2 text-3xl font-semibold">Welcome to Comfort Corner</h1>
+      <h1 className="mt-2 pr-16 text-3xl font-semibold">Welcome to Comfort Corner</h1>
       <form
         className="mt-6 space-y-4"
         onSubmit={(e) => {
