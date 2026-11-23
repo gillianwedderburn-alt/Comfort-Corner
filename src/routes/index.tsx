@@ -208,7 +208,7 @@ function Home({ onPick, section, onSectionChange, onReflect, onJournal }: {
               <li>Afterwards, ask "How was that?" rather than "Are you okay?". It is an easier question to answer.</li>
             </ul>
             <p>
-              These routines are for rest and comfort only. If your daughter is in pain that worries you, or something does not feel right, please speak to your GP or pharmacist. Nothing is sent from this page. Any reflections she saves stay only on this device, so her check-ins stay private.
+              These routines are for rest and comfort only. If your daughter is in pain that worries you, or something does not feel right, please speak to your GP or pharmacist. Anything your daughter writes in her check-in is kept only on her own device. Nothing is sent to us or anywhere else.
             </p>
           </div>
         )}
@@ -237,7 +237,7 @@ function Home({ onPick, section, onSectionChange, onReflect, onJournal }: {
       </div>
 
       <footer className="mt-10 border-t pt-6 text-sm text-muted-foreground">
-        These routines are for rest and comfort. They are not medical advice. Move gently, stop any stretch that hurts, and speak to a pharmacist or your GP if something worries you. Nothing you do here is sent anywhere. Reflections you choose to save are kept only on this device.
+        These routines are for rest and comfort. They are not medical advice. Move gently, stop any stretch that hurts, and speak to a pharmacist or your GP if something worries you. Anything your daughter writes in her check-in is kept only on her own device. Nothing is sent to us or anywhere else.
       </footer>
     </>
   );
