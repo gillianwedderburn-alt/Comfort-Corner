@@ -7,11 +7,12 @@ import { Button } from "@/components/ui/button";
 import { ReflectionScreen, Journal } from "@/components/Reflections";
 import tpBadge from "@/assets/tp-badge.png.asset.json";
 import { InstallTip } from "@/components/InstallTip";
+import { isValidAccessCode } from "@/lib/accessCodes";
 
 // Access code settings. Set REQUIRE_ACCESS_CODE to false to switch the code screen off.
 const REQUIRE_ACCESS_CODE = true;
-// Main code for buyers, plus a temporary free-trial code for a few chosen people.
-const ACCESS_CODES = ["TANPURE26", "TRYPURE10"];
+// Gillian's own demo code for showing the app to potential purchasers. Buyer codes live in src/lib/accessCodes.ts.
+const DEMO_CODE = "TRYPURE10";
 const SESSION_KEY = "comfort-corner-access";
 
 const TITLE = "Comfort Corner and Talk Cards | Tandrewphen Pure";
@@ -96,9 +97,11 @@ function AccessScreen({ onUnlock }: { onUnlock: () => void }) {
       <h1 className="mt-2 pr-16 text-3xl font-semibold">Welcome to Comfort Corner</h1>
       <form
         className="mt-6 space-y-4"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          if (ACCESS_CODES.includes(code.trim().toUpperCase())) {
+          const ok =
+            code.trim().toUpperCase() === DEMO_CODE || (await isValidAccessCode(code));
+          if (ok) {
             sessionStorage.setItem(SESSION_KEY, "ok");
             onUnlock();
           } else setError(true);
@@ -118,7 +121,7 @@ function AccessScreen({ onUnlock }: { onUnlock: () => void }) {
         />
         {error && (
           <p id="code-error" role="alert" className="text-sm">
-            That code does not match. Please check your order email and try again.
+            That code wasn't recognised. Please check it and try again, or reply to your order email.
           </p>
         )}
         <button type="submit" className="h-12 w-full rounded-full bg-primary font-semibold text-primary-foreground">
